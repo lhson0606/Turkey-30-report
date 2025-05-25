@@ -1,0 +1,206 @@
+% Setting up the document class with standard formatting
+\documentclass[12pt, a4paper]{article}
+
+% Including essential packages for formatting and structure
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titling}
+
+% Configuring page geometry for proper margins
+\geometry{margin=1in}
+
+% Setting up headers and footers
+\pagestyle{fancy}
+\fancyhf{}
+
+\title{Classification of Audio Embeddings Using Logistic Regression}
+\author{Turkey Detection Team}
+\date{May 25, 2025}
+
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{\thetitle}
+
+% Configuring title and author for the cover page
+\pretitle{\begin{center}\LARGE\bfseries}
+\posttitle{\par\end{center}\vskip 0.5em}
+\preauthor{\begin{center}\large}
+\postauthor{\end{center}}
+
+% Setting the font to Latin Modern for consistency
+\usepackage{lmodern}
+
+\begin{document}
+
+% Creating the cover page
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    % Placeholder for school logo
+    % Replace with \includegraphics[width=0.5\textwidth]{logo.png} when adding the logo
+    \fbox{\parbox{0.5\textwidth}{\centering \textbf{[School Logo Placeholder]}}}
+
+    \vspace{1.5cm}
+    
+    % Report title
+    \Huge \textbf{Classification of Audio Embeddings Using Logistic Regression} \\
+    
+    \vspace{1cm}
+    
+    % Subject
+    \Large \textbf{Subject: Machine Learning Project} \\
+    
+    \vspace{0.5cm}
+    
+    % Date
+    \large \textbf{Date: May 25, 2025} \\
+    
+    \vspace{0.5cm}
+    
+    % Supervised teachers
+    \large \textbf{Supervised by: [Teacher Name(s)]} \\
+    
+    \vspace{0.5cm}
+    
+    % Location
+    \large \textbf{Location: [City, Country]} \\
+    
+    \vspace{0.5cm}
+    
+    % School name
+    \large \textbf{[School Name]} \\
+    
+    \vspace{2cm}
+    
+    % Group information
+    \large \textbf{Prepared by: [Group Name]} \\
+    
+    \vfill
+    
+\end{titlepage}
+
+\newpage
+
+% Group Information Section
+\section{Group Information}
+This project was completed by the group \textbf{[Group Name]}. The team members are listed below:
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{ll}
+        \toprule
+        \textbf{Name} & \textbf{Student ID} \\
+        \midrule
+        John Smith & 20210123 \\
+        Mary Johnson & 20210456 \\
+        Alex Williams & 20210789 \\
+        % Add more rows as needed
+        \bottomrule
+    \end{tabular}
+    \caption{Group Members}
+    \label{tab:group_members}
+\end{table}
+
+% About the Project Section
+\section{About the Project}
+The objective of this project is to develop a machine learning model to classify audio clips based on the presence of turkey sounds. The input data consists of audio embeddings, each represented as a matrix of shape $[10, 128]$, where 10 is the number of frames and 128 is the dimensionality of each frame’s feature vector. These embeddings are extracted from audio clips and provided in a JSON file (\texttt{train.json}). The task is a binary classification problem, where the model predicts whether an audio clip contains turkey sounds (\texttt{is\_turkey = 1}) or not (\texttt{is\_turkey = 0}). The classification is performed using a logistic regression model implemented with Scikit-learn, leveraging the flattened embeddings (size 1280) as input features.
+
+% Data Preprocessing Section
+\section{Data Preprocessing}
+The dataset was sourced from a JSON file (\texttt{train.json}) containing audio embeddings and binary labels. The preprocessing steps included:
+
+\begin{itemize}
+    \item Loading the JSON data into a pandas DataFrame.
+    \item Extracting \texttt{audio\_embedding} (shape [10, 128]) and \texttt{is\_turkey} (binary labels: 0 or 1).
+    \item Flattening each audio embedding to a 1D array of size 1280 (10 $\times$ 128).
+    \item Padding or truncating embeddings to ensure a consistent size.
+    \item Splitting the data into training (70\%), validation (15\%), and test (15\%) sets using stratified splitting to maintain class distribution.
+\end{itemize}
+
+% Model Description Section
+\section{Model Description}
+The model used for this project is a logistic regression classifier implemented using Scikit-learn's \texttt{LogisticRegression} class. Key details include:
+
+\begin{itemize}
+    \item \textbf{Algorithm}: Logistic regression with the \texttt{liblinear} solver, suitable for small datasets.
+    \item \textbf{Input Features}: Flattened audio embeddings of size 1280 (10 frames $\times$ 128 dimensions).
+    \item \textbf{Output}: Binary classification (0 or 1) for the \texttt{is\_turkey} label.
+    \item \textbf{Hyperparameters}: insert here
+\end{itemize}
+
+% Platform Section
+\section{Platform}
+The project was developed and executed on the following platform:
+
+\begin{itemize}
+    \item \textbf{Google Colab}: insert here
+    \item \textbf{Google Drive}: Used for storing and accessing the dataset (\texttt{train.json}) and saving the submission file (\texttt{submission.csv}).
+    \item \textbf{Libraries}: Scikit-learn for model implementation, pandas for data processing, NumPy for numerical operations, and other standard Python libraries.
+    \item \textbf{Latex}: The report is formatted using LaTeX for professional presentation.
+\end{itemize}
+
+% Training Section
+\section{Training}
+The training process involved the following steps:
+
+\begin{itemize}
+    \item \textbf{Data Loading}: The JSON dataset was loaded using pandas and processed to extract features and labels.
+    \item \textbf{Data Splitting}: The dataset was split into:
+        \begin{itemize}
+            \item Training set: 70\% of the data.
+            \item Validation set: 15\% of the data.
+            \item Test set: 15\% of the data.
+        \end{itemize}
+        Splitting was performed using Scikit-learn's \texttt{train\_test\_split} with a random state of 42 for reproducibility.
+    \item \textbf{Model Training}: The logistic regression model was trained on the training set using the \texttt{fit} method.
+    \item \textbf{Validation}: The model was evaluated on the validation set to tune hyperparameters and assess performance.
+\end{itemize}
+
+% Evaluation Metrics Section
+\section{Evaluation Metrics}
+The model’s performance was evaluated using the following metrics:
+
+\begin{itemize}
+    \item \textbf{Accuracy}: The proportion of correct predictions on the validation and test sets.
+\end{itemize}
+
+% Accuracy Report Section
+\section{Accuracy Report}
+The logistic regression model achieved the following performance:
+
+\begin{itemize}
+    \item \textbf{Validation Accuracy}: [Insert validation accuracy here, e.g., 0.XXXX].
+    \item \textbf{Test Accuracy}: [Insert test accuracy here, e.g., 0.XXXX].
+\end{itemize}
+
+The random forest model achieved the following performance:
+
+\begin{itemize}
+    \item \textbf{Validation Accuracy}: [Insert validation accuracy here, e.g., 0.XXXX].
+    \item \textbf{Test Accuracy}: [Insert test accuracy here, e.g., 0.XXXX].
+\end{itemize}
+
+% Submission File Section
+\section{Submission File}
+(\texttt{submission.csv})
+
+% Conclusion Section
+\section{Conclusion}
+[Insert your conclusion here, summarizing the project outcomes, model performance, challenges faced, and potential improvements.]
+
+% References Section
+\section{References}
+\begin{itemize}
+    \item Scikit-learn Documentation: \url{https://scikit-learn.org/stable/}
+    \item Pandas Documentation: \url{https://pandas.pydata.org/}
+    \item Google Colab: \url{https://colab.research.google.com/}
+\end{itemize}
+
+\end{document}
