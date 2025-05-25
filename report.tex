@@ -98,7 +98,7 @@ This project was completed by the group \textbf{[Group Name]}. The team members 
         \toprule
         \textbf{Name} & \textbf{Student ID} \\
         \midrule
-        John Smith & 20210123 \\
+        Bùi Kim Phúc & 21120112 \\
         Mary Johnson & 20210456 \\
         Alex Williams & 20210789 \\
         % Add more rows as needed
@@ -126,13 +126,23 @@ The dataset was sourced from a JSON file (\texttt{train.json}) containing audio 
 
 % Model Description Section
 \section{Model Description}
-The model used for this project is a logistic regression classifier implemented using Scikit-learn's \texttt{LogisticRegression} class. Key details include:
+The models used for this project are a logistic regression classifier and a random forest classifier, both implemented using Scikit-learn. Key details for each model are as follows:
 
 \begin{itemize}
-    \item \textbf{Algorithm}: Logistic regression with the \texttt{liblinear} solver, suitable for small datasets.
-    \item \textbf{Input Features}: Flattened audio embeddings of size 1280 (10 frames $\times$ 128 dimensions).
-    \item \textbf{Output}: Binary classification (0 or 1) for the \texttt{is\_turkey} label.
-    \item \textbf{Hyperparameters}: insert here
+    \item \textbf{Logistic Regression}:
+        \begin{itemize}
+            \item \textbf{Algorithm}: Logistic regression with the \texttt{liblinear} solver, suitable for small datasets.
+            \item \textbf{Input Features}: Flattened audio embeddings of size 1280 (10 frames $\times$ 128 dimensions).
+            \item \textbf{Output}: Binary classification (0 or 1) for the \texttt{is\_turkey} label.
+            \item \textbf{Hyperparameters}: [Insert hyperparameters here, e.g., C=1.0, max\_iter=100].
+        \end{itemize}
+    \item \textbf{Random Forest}:
+        \begin{itemize}
+            \item \textbf{Algorithm}: Random forest classifier, an ensemble method using multiple decision trees.
+            \item \textbf{Input Features}: Flattened audio embeddings of size 1280 (10 frames $\times$ 128 dimensions).
+            \item \textbf{Output}: Binary classification (0 or 1) for the \texttt{is\_turkey} label.
+            \item \textbf{Hyperparameters}: [Insert hyperparameters here, e.g., n\_estimators=100, max\_depth=None, random\_state=42].
+        \end{itemize}
 \end{itemize}
 
 % Platform Section
@@ -148,7 +158,7 @@ The project was developed and executed on the following platform:
 
 % Training Section
 \section{Training}
-The training process involved the following steps:
+The training process involved the following steps for both the logistic regression and random forest models:
 
 \begin{itemize}
     \item \textbf{Data Loading}: The JSON dataset was loaded using pandas and processed to extract features and labels.
@@ -159,8 +169,12 @@ The training process involved the following steps:
             \item Test set: 15\% of the data.
         \end{itemize}
         Splitting was performed using Scikit-learn's \texttt{train\_test\_split} with a random state of 42 for reproducibility.
-    \item \textbf{Model Training}: The logistic regression model was trained on the training set using the \texttt{fit} method.
-    \item \textbf{Validation}: The model was evaluated on the validation set to tune hyperparameters and assess performance.
+    \item \textbf{Model Training}:
+        \begin{itemize}
+            \item \textbf{Logistic Regression}: The model was trained on the training set using the \texttt{fit} method with the \texttt{liblinear} solver.
+            \item \textbf{Random Forest}: The model was trained on the training set using the \texttt{fit} method with an ensemble of decision trees.
+        \end{itemize}
+    \item \textbf{Validation}: Both models were evaluated on the validation set to tune hyperparameters and assess performance.
 \end{itemize}
 
 % Evaluation Metrics Section
@@ -173,18 +187,19 @@ The model’s performance was evaluated using the following metrics:
 
 % Accuracy Report Section
 \section{Accuracy Report}
-The logistic regression model achieved the following performance:
+The performance of both models is reported below:
 
 \begin{itemize}
-    \item \textbf{Validation Accuracy}: [Insert validation accuracy here, e.g., 0.XXXX].
-    \item \textbf{Test Accuracy}: [Insert test accuracy here, e.g., 0.XXXX].
-\end{itemize}
-
-The random forest model achieved the following performance:
-
-\begin{itemize}
-    \item \textbf{Validation Accuracy}: [Insert validation accuracy here, e.g., 0.XXXX].
-    \item \textbf{Test Accuracy}: [Insert test accuracy here, e.g., 0.XXXX].
+    \item \textbf{Logistic Regression}:
+        \begin{itemize}
+            \item \textbf{Validation Accuracy}: [Insert validation accuracy here, e.g., 0.XXXX].
+            \item \textbf{Test Accuracy}: [Insert test accuracy here, e.g., 0.XXXX].
+        \end{itemize}
+    \item \textbf{Random Forest}:
+        \begin{itemize}
+            \item \textbf{Validation Accuracy}: [0.8939].
+            \item \textbf{Test Accuracy}: [0.9000].
+        \end{itemize}
 \end{itemize}
 
 % Submission File Section
