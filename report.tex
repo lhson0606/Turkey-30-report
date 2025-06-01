@@ -25,7 +25,7 @@
 
 \title{Classification of Audio Embeddings}
 \author{Turkey Detection Team}
-\date{May 25, 2025}
+\date{June 01, 2025}
 
 \fancyhead[L]{\leftmark}
 \fancyhead[R]{\thepage}
@@ -84,7 +84,7 @@
     \large \textbf{Prepared by: Group 30} \\
 
     % Date
-    \small \text{Date: May 25, 2025} \\
+    \small \text{Date: June 01, 2025} \\
     
     \vfill
     
@@ -112,7 +112,7 @@ This project was completed by the group \textbf{Group 30}. The team members are 
 
 % About the Project Section
 \section{About the Project}
-The objective of this project is to develop a machine learning model to classify audio clips based on the presence of turkey sounds. The input data consists of audio embeddings, each represented as a matrix of shape $[10, 128]$, where 10 is the number of frames and 128 is the dimensionality of each frame’s feature vector. These embeddings are extracted from audio clips and provided in a JSON file (\texttt{train.json}). The task is a binary classification problem, where the model predicts whether an audio clip contains turkey sounds (\texttt{is\_turkey = 1}) or not (\texttt{is\_turkey = 0}). The classification is performed using a logistic regression model implemented with Scikit-learn, leveraging the flattened embeddings (size 1280) as input features.
+The objective of this project is to develop a machine learning model to classify audio clips based on the presence of turkey sounds. The input data consists of audio embeddings, each represented as a matrix of shape $[10, 128]$, where 10 is the number of frames and 128 is the dimensionality of each frame’s feature vector. These embeddings are extracted from audio clips and provided in a JSON file (\texttt{train.json}). The task is a binary classification problem, where the model predicts whether an audio clip contains turkey sounds (\texttt{is\_turkey = 1}) or not (\texttt{is\_turkey = 0}). The classification is performed using a MLP model using Pytorch framework, leveraging the flattened embeddings (size 1280) as input features.
 Finally, the model's performance is evaluated on a test set, and the results are submitted in a CSV file (\texttt{submission.csv}) for Kaggle competition.
 % Data Preprocessing Section
 \section{Data Preprocessing}
@@ -123,12 +123,15 @@ The dataset was sourced from a JSON file (\texttt{train.json}) containing audio 
     \item Extracting \texttt{audio\_embedding} (shape [10, 128]) and \texttt{is\_turkey} (binary labels: 0 or 1).
     \item Flattening each audio embedding to a 1D array of size 1280 (10 $\times$ 128).
     \item Padding or truncating embeddings to ensure a consistent size.
-    \item The data contains a total of 1195 samples and is splitted into 836 training samples (70\%), 179 validation samples (15\%), and 180 test samples (15\%) with shuffling to ensure randomness.
+    \item The data contains a total of 1195 samples and is split into 836 training samples (70\%), 179 validation samples (15\%), and 180 test samples (15\%) with shuffling to ensure randomness.
 \end{itemize}
 
 % Model Description Section
 \section{Model Description}
-The models used for this project are a logistic regression classifier and a random forest classifier, both implemented using Scikit-learn. Key details for each model are as follows:
+This project was conducted in three phases, employing different model architectures:
+
+\subsection{Phase 1: Traditional Machine Learning Models}
+Initially, we implemented two classical machine learning models using Scikit-learn:
 
 \begin{itemize}
     \item \textbf{Logistic Regression}:
@@ -147,6 +150,27 @@ The models used for this project are a logistic regression classifier and a rand
         \end{itemize}
 \end{itemize}
 
+\subsection{Phase 2: Neural Network Approach}
+In the second phase, we implemented a more sophisticated neural network model using PyTorch:
+
+\begin{itemize}
+    \item \textbf{Multilayer Perceptron (MLP)}:
+        \begin{itemize}
+            \item \textbf{Architecture}: A flexible neural network with configurable hidden layers.
+            \item \textbf{Input Layer}: Flattens the input embeddings from [10, 128] to a vector of size 1280.
+            \item \textbf{Hidden Layers}: Multiple fully connected layers with ReLU activation functions.
+            \item \textbf{Regularization}: Dropout layers with 0.3 dropout rate to prevent overfitting.
+            \item \textbf{Output Layer}: A fully connected layer producing logits for binary classification.
+        \end{itemize}
+\end{itemize}
+
+MLP model compared to models in Phase 1 offers several advantages:
+\begin{itemize}
+    \item More complex pattern recognition through non-linear transformations using Rectified Linear Units (ReLU) activation functions.
+    \item Better handling of the high-dimensional audio embedding features
+    \item Enhanced regularization strategies to prevent overfitting
+\end{itemize}
+
 % Platform Section
 \section{Platform}
 The project was developed and executed on the following platform:
@@ -154,7 +178,7 @@ The project was developed and executed on the following platform:
 \begin{itemize}
     \item \textbf{Google Colab}: The primary development environment, providing a cloud-based Jupyter notebook interface with GPU support for efficient model training and evaluation.
     \item \textbf{Google Drive}: Used for storing and accessing the dataset (\texttt{train.json}) and saving the submission file (\texttt{submission.csv}).
-    \item \textbf{Libraries}: Scikit-learn for model implementation, pandas for data processing, NumPy for numerical operations, and other standard Python libraries.
+    \item \textbf{Libraries}: Pytorch framework for model implementation, pandas for data processing, NumPy for numerical operations, and other standard Python libraries.
     \item \textbf{Latex}: The report is formatted using LaTeX for professional presentation.
 \end{itemize}
 
@@ -171,12 +195,15 @@ The training process involved the following steps for both the logistic regressi
             \item Test set: 15\% of the data, including 180 samples.
         \end{itemize}
         Splitting was performed using Scikit-learn's \texttt{train\_test\_split} with a random state of 42 for reproducibility.
-    \item \textbf{Model Training}:
-        \begin{itemize}
-            \item \textbf{Logistic Regression}: The model was trained on the training set using the \texttt{fit} method with the \texttt{liblinear} solver.
-            \item \textbf{Random Forest}: The model was trained on the training set using the \texttt{fit} method with an ensemble of decision trees.
-        \end{itemize}
-    \item \textbf{Validation}: Both models were evaluated on the validation set to tune hyperparameters and assess performance.
+    \item \textbf{Training Approach}:
+                \begin{itemize}
+                    \item Loss Function: Cross-Entropy Loss
+                    \item Optimizer: Adam with learning rate of 0.003
+                    \item Weight Decay: 1e-5 for L2 regularization
+                    \item Early Stopping: Implementation of patience (16 epochs) to prevent overfitting
+                    \item Pocket Algorithm: Saves the best model based on validation accuracy
+                    \item Maximum Epochs: 64
+                \end{itemize}
 \end{itemize}
 
 % Evaluation Metrics Section
@@ -189,43 +216,54 @@ The model’s performance was evaluated using the following metrics:
 
 % Accuracy Report Section
 \section{Accuracy Report}
-The performance of both models is reported below:
+The performance of our models is reported below:
 
 \begin{itemize}
-    \item \textbf{Logistic Regression}:
+    \item \textbf{Phase 1: Traditional Machine Learning Models}:
         \begin{itemize}
-            \item \textbf{Validation Accuracy}: 0.9497.
-            \item \textbf{Test Accuracy}: 0.9167.
+            \item \textbf{Logistic Regression}:
+                \begin{itemize}
+                    \item \textbf{Validation Accuracy}: 0.9497
+                    \item \textbf{Test Accuracy}: 0.9167
+                    \item \textbf{Kaggle Score}: 0.9334
+                \end{itemize}
+            \item \textbf{Random Forest}:
+                \begin{itemize}
+                    \item \textbf{Validation Accuracy}: 0.8939
+                    \item \textbf{Test Accuracy}: 0.9000
+                \end{itemize}
         \end{itemize}
-    \item \textbf{Random Forest}:
+    \item \textbf{Phase 2: Neural Network Approach}:
         \begin{itemize}
-            \item \textbf{Validation Accuracy}: 0.8939.
-            \item \textbf{Test Accuracy}: 0.9000.
+            \item \textbf{Multilayer Perceptron (MLP)}:
+                \begin{itemize}
+                    \item \textbf{Validation Accuracy}: 0.9385
+                    \item \textbf{Test Accuracy}: 0.9611
+                    \item \textbf{Kaggle Score}: 0.9411
+                \end{itemize}
         \end{itemize}
 \end{itemize}
+
+The MLP model achieved its best validation accuracy of 93.85\% after just 3 epochs of training, with early stopping triggered after 16 epochs without improvement. The final test accuracy was 96.11\%, indicating a significant improvement over the traditional models.
 
 % Submission File Section
 \section{Submission}
 Submission files include:
 \begin{itemize}
-    \item \texttt{submission.csv}: Our best result achieves a test accuracy of 93.347\% using the logistic regression model on Kaggle.
-    \item \texttt{Turkey30\_Scikit\_learn.ipynb}: The Jupyter notebook containing the complete code for data preprocessing, model training, evaluation, and submission generation.
+    \item \texttt{Group30\_Turkey30.ipynb}: The Jupyter notebook containing the code for data preprocessing, model training, and evaluation.
     \item \texttt{This report}: The LaTeX report detailing the project, methodology, and results.
+    \item \texttt{submission.csv}: Our neural network approach achieved a higher score of 94.11\% on Kaggle.
 \end{itemize}
 
 % Conclusion Section
 \section{Conclusion}
 
-\indent In this project, we successfully implemented a machine learning model to classify audio embeddings for the presence of turkey sounds. The logistic regression model achieved a validation accuracy of 94.97\% and a test accuracy of 91.67\%, while the random forest model achieved a validation accuracy of 89.39\% and a test accuracy of 90.00\%.
-
-\indent Although these models are quite simple, they demonstrate the feasibility of using audio embeddings for classification tasks.
-
-\indent The logistic regression model outperformed the random forest model in terms of accuracy, indicating that a linear approach was effective for this dataset. Future work could explore more complex models like deep learning Neural Networks for potentially better performance.
+\indent In this project, we successfully implemented a machine learning model using MLP in Pytorch framework. Although the Kaggle score result did not improve significantly compared to the logistic regression model, we gained valuable insights into the classification of audio embeddings. The project demonstrated the effectiveness of traditional machine learning models and neural networks in handling audio data.
 
 % References Section
 \section{References}
 \begin{itemize}
-    \item Scikit-learn Documentation: \url{https://scikit-learn.org/stable/}
+    \item Pytorch tutorial: \url{https://docs.pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html}
     \item Pandas Documentation: \url{https://pandas.pydata.org/}
     \item Google Colab: \url{https://colab.research.google.com/}
     \item Kaggle competition page: \\
@@ -243,7 +281,7 @@ The project utilized AI tools including GPT-4, Grok, and Claude Sonnet 3.7 for v
 We acknowledge the use of AI tools in enhancing our productivity and code quality, while ensuring that the core logic and implementation were developed by the team.\\
 \indent Chat conversations with AI can be found here:
 \begin{itemize}
-    \item \url{https://grok.com/share/bGVnYWN5_161d9f2e-a240-48ec-a2ac-be01d0881371}
+    \item \url{https://grok.com/share/bGVnYWN5_b1b4cc44-6408-4ae0-ad5e-ed776476da01}
 \end{itemize}
 
 \end{document}
